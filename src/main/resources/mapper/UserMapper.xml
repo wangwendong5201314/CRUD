@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserMapper">
+
+	<update id="update" parameterType="User">
+		update users set uname=#{uname},pwd=#{pwd},age=#{age},sex=#{sex} where id=#{id}
+		
+	</update>
+	
+	<insert id="insert" parameterType="User" >
+		insert into users (uname,pwd,age,sex) values(#{uname},#{pwd},#{age},#{age})
+	</insert>
+
+	<select id="selectAll" resultType="User"  >
+		select * from users where  id like "%${search}%" 
+				or uname like "%${search}%" 
+				or pwd like "%${search}%" 
+
+			 	limit #{offset},#{limit}
+
+		
+		
+	</select>
+	
+	<select id="countUser" resultType="Int" >
+		select count(*) from users
+		<where>
+			<if test="search !='' and search !=null">
+				or id like "%${search}%"
+				or uname like "%${search}%" 
+				or pwd like "%${search}%" 
+			
+			 </if>
+			
+			
+		</where>
+		
+	</select>
+	
+	<delete id="delete" parameterType="User">
+		delete from users where id=#{id}
+	</delete>
+	
+	<select id="selectById"  resultType="User" parameterType="User">
+		select * from users where id=#{id}
+			
+	</select>
+	
+	<delete id="deletelist">
+		delete from users 
+		    <where>  
+		        id in         
+		         <foreach collection="array" item="id" index="index"       
+		                     open="(" close=")" separator=",">  
+		                       #{id}            
+		                       
+		                </foreach>		 
+		                
+		                   </where>
+	
+	</delete>
+	
+</mapper>
